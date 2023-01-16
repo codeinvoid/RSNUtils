@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.pio.rsn.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "vanilla.WhitelistCommandMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

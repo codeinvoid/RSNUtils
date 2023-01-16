@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "rsn_server",
+  "version": "${version}",
+  "name": "RSN-Server",
+  "description": "A RSN Present Mod",
+  "authors": [
+    "HoiGe"
+  ],
+  "contact": {
+    "homepage": "https://p-io.org/"
+  },
+  "mixins": [
+    "rsn.mixins.json"
+  ],
+  "license": "Off Source",
+  "icon": "assets/rsn/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "org.pio.rsn.Server"
+      }
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${fabricloader}",
+    "fabric-api": ">=${fabric_api}",
+    "fabric-language-kotlin": ">=${fabric_language_kotlin}",
+    "minecraft": ">=${minecraft}",
+    "java": ">=${java}"
+  }
+}
