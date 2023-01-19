@@ -13,3 +13,6 @@ data class Whitelist(val active: Boolean, val time: Long)
 
 @Serializable
 data class Valid(val code: Int)
+
+@Serializable
+data class Player(val name: String, val id: String)

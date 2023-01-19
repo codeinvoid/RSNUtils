@@ -8,8 +8,10 @@ group = project.extra["maven_group"] as String
 repositories {
     mavenCentral()
     maven {
-
         url = uri("https://jitpack.io")
+    }
+    maven {
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
     }
 }
 dependencies {
@@ -19,11 +21,15 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api", "fabric-api", project.extra["fabric_version"] as String)
     modImplementation("net.fabricmc", "fabric-language-kotlin", project.extra["fabric_language_kotlin_version"] as String)
     modImplementation("net.silkmc:silk-commands:1.9.5")
+    modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")
 
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation("com.google.code.gson:gson:2.10.1")
+
+    modApi("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")
+    include("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")
 }
 tasks {
     val javaVersion = JavaVersion.toVersion((project.extra["java_version"] as String).toInt())

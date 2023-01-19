@@ -4,6 +4,7 @@
   "package": "org.pio.rsn.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "vanilla.BannedCommandMixin",
     "vanilla.WhitelistCommandMixin"
   ],
   "injectors": {

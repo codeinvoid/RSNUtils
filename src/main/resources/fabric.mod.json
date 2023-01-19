@@ -29,6 +29,8 @@
     "fabric-api": ">=${fabric_api}",
     "fabric-language-kotlin": ">=${fabric_language_kotlin}",
     "minecraft": ">=${minecraft}",
-    "java": ">=${java}"
+    "java": ">=${java}",
+    "luckperms": "5.4.58",
+    "fabric-permissions-api-v0": "*"
   }
 }
