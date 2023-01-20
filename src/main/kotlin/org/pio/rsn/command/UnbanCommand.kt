@@ -8,28 +8,21 @@ import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.silkmc.silk.core.text.broadcastText
-import org.pio.rsn.temp.textTemp
 import org.pio.rsn.utils.findUUID
 import org.pio.rsn.utils.putBanned
-import org.pio.rsn.utils.requestBanned
 
-class BanCommand {
+class UnbanCommand {
     @OptIn(DelicateCoroutinesApi::class)
-    fun banHandle(
+    fun unbanHandle(
         source: ServerCommandSource,
-        player: String,
-        reason: String
+        player: String
     ) {
         GlobalScope.launch {
             if (findUUID(player) != null) {
                 val uuid = findUUID(player)?.id.toString()
-                if (putBanned(uuid,reason,source.name,true)) {
-                    val banned = requestBanned(uuid)
-                    source.server.broadcastText(
-                        Text.literal("玩家 $player 因为 $reason 而被封禁!")
-                            .setStyle(Style.EMPTY.withColor(Formatting.RED))
-                    )
-                    source.player?.networkHandler?.disconnect(banned?.let { textTemp(it) })
+                if (putBanned(uuid,"",source.name,false)){
+                    source.server.broadcastText(Text.literal("玩家 $player 被 ${source.name} 赦免了!")
+                        .setStyle(Style.EMPTY.withColor(Formatting.YELLOW)))
                 }
             }
         }
