@@ -1,5 +1,6 @@
 package org.pio.rsn.temp
 
+import net.minecraft.text.MutableText
 import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -7,7 +8,7 @@ import org.pio.rsn.model.Banned
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun textTemp(banned: Banned) : Text {
+fun textTemp(banned: Banned) : MutableText {
     return Text
         .literal("你已被封禁\n\n")
         .setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true))
