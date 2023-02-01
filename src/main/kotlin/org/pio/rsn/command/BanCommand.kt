@@ -9,7 +9,7 @@ import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.silkmc.silk.core.text.broadcastText
-import org.pio.rsn.temp.textTemp
+import org.pio.rsn.temp.bannedMessage
 import org.pio.rsn.utils.putBanned
 import org.pio.rsn.utils.requestBanned
 
@@ -29,7 +29,7 @@ class BanCommand {
                         Text.literal("玩家 ${item.name} 因为 $reason 而被封禁!")
                             .setStyle(Style.EMPTY.withColor(Formatting.RED))
                     )
-                    source.player?.networkHandler?.disconnect(banned?.let { textTemp(it) })
+                    source.player?.networkHandler?.disconnect(banned?.let { bannedMessage(it) })
                 }
             }
         }

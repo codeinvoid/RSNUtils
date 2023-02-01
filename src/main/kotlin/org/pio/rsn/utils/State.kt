@@ -92,3 +92,7 @@ fun matchCode(uuid: String, code:Int): Boolean {
         return response.code == 200
     }
 }
+
+fun sendMessage(context: Any) {
+    println(context)
+}

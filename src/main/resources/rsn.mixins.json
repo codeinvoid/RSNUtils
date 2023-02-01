@@ -4,11 +4,12 @@
   "package": "org.pio.rsn.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MainText",
+    "MainTips",
     "ServerVersion",
+    "block.MushroomDevourer",
     "vanilla.BannedCommandMixin",
     "vanilla.WhitelistCommandMixin",
-    "whitelist.WhitelistLink"
+    "whitelist.WhitelistChecker"
   ],
   "injectors": {
     "defaultRequire": 1

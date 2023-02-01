@@ -15,7 +15,7 @@ import net.silkmc.silk.core.annotations.ExperimentalSilkApi
 import net.silkmc.silk.core.event.PlayerEvents
 import net.silkmc.silk.core.text.broadcastText
 import org.pio.rsn.model.Whitelist
-import org.pio.rsn.temp.textTemp
+import org.pio.rsn.temp.bannedMessage
 import org.pio.rsn.temp.whitelistTitle
 import org.pio.rsn.utils.contrastBanned
 import org.pio.rsn.utils.requestBanned
@@ -37,6 +37,7 @@ class JoinEvent {
         GlobalScope.launch {
             val banned = requestBanned(uuid)
             val whitelist = requestWhitelist(uuid)
+
             when (contrastBanned(uuid)) {
                 null -> {
                     player.networkHandler.disconnect(Text.literal("API连接失败 请重试"))
@@ -47,7 +48,7 @@ class JoinEvent {
                 }
 
                 false -> {
-                    player.networkHandler.disconnect(banned?.let { textTemp(it) })
+                    player.networkHandler.disconnect(banned?.let { bannedMessage(it) })
                     player.server.broadcastText(
                         Text.literal("玩家 $name 试图进入服务器，但是他已被被封禁!")
                             .setStyle(Style.EMPTY.withColor(Formatting.RED))

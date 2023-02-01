@@ -7,12 +7,8 @@ version = project.extra["mod_version"] as String
 group = project.extra["maven_group"] as String
 repositories {
     mavenCentral()
-    maven {
-        url = uri("https://jitpack.io")
-    }
-    maven {
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
-    }
+    maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
 }
 dependencies {
     minecraft("com.mojang", "minecraft", project.extra["minecraft_version"] as String)

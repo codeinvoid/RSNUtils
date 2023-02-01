@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Mixin(net.minecraft.server.MinecraftServer.class)
-public abstract class WhitelistLink {
+public abstract class WhitelistChecker {
     @Shadow @Final private static Logger LOGGER;
 
     private static final AtomicInteger NEXT_WHITELIST_THREAD_ID = new AtomicInteger(0);

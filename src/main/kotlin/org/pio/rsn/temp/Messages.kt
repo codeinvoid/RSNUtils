@@ -8,7 +8,7 @@ import org.pio.rsn.model.Banned
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun textTemp(banned: Banned) : MutableText {
+fun bannedMessage(banned: Banned) : MutableText {
     return Text
         .literal("你已被封禁\n\n")
         .setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true))
