@@ -11,6 +11,6 @@ public abstract class ServerVersion {
      */
     @Overwrite
     public String getName() {
-        return "Last_ID: 一定是ps的";
+        return "RSNCore 1.19.3";
     }
 }

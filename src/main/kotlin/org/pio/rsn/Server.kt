@@ -11,7 +11,7 @@ object Server: ModInitializer {
     val LOGGER: Logger = LoggerFactory.getLogger("RSN-Server")
     private const val server = "rsn_server"
     override fun onInitialize() {
-        LOGGER.info("RSN-Server Is Loaded!")
+        LOGGER.info("RSN-SERVER Is Mixed!")
         Commands()
     }
 }

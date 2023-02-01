@@ -1,8 +1,6 @@
 package org.pio.rsn.mixin.whitelist;
 
 import com.google.common.collect.Lists;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -51,7 +49,7 @@ public abstract class WhitelistLink {
         if (isWhitelistActive == null) {
             serverPlayerEntity.networkHandler.disconnect(Text.literal("multiplayer.disconnect.not_whitelisted"));
         } else {
-            serverPlayerEntity.sendMessage(Text.literal("✔︎ ").setStyle(Style.EMPTY.withColor(Formatting.GREEN))
+            serverPlayerEntity.sendMessage(Text.literal("✔ ").setStyle(Style.EMPTY.withColor(Formatting.GREEN))
                     .append("白名单验证通过"));
         }
     }

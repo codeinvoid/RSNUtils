@@ -7,25 +7,12 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.pio.rsn.model.Banned
-import org.pio.rsn.model.Player
 import org.pio.rsn.model.Valid
 import org.pio.rsn.model.Whitelist
 
 private val client = OkHttpClient()
 private val gson = Gson()
 const val success = 200
-
-fun findUUID(player: String): Player? {
-    val request = Request.Builder()
-        .url("https://api.mojang.com/users/profiles/minecraft/${player}")
-        .build()
-
-    client.newCall(request).execute().use { response ->
-        if (response.code == success)
-            return gson.fromJson(response.body?.string() ?: String(), Player::class.java)
-    }
-    return null
-}
 
 fun matchUUID(uuid: String): Any {
     val request = Request.Builder()
