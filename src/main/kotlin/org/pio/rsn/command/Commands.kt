@@ -7,16 +7,6 @@ import net.silkmc.silk.commands.command
 
 class Commands {
 
-    val verify = command("verify") {
-        requires { source ->  Permissions.check(source, "rsn.command.verify", 4) }
-        requires { source -> source.isExecutedByPlayer }
-        argument<Int>("code") { code ->
-            runsAsync {
-                VerifyCommand().verify(code(), source)
-            }
-        }
-    }
-
     val ban = command("ban") {
         requires { source ->  Permissions.check(source, "rsn.admin.command.ban", 4) }
         argument("targets", GameProfileArgumentType.gameProfile()) { player ->
@@ -36,6 +26,40 @@ class Commands {
         argument("targets", GameProfileArgumentType.gameProfile()) { player ->
             runsAsync {
                 UnbanCommand().unbanHandle(source, player().getNames(source))
+            }
+        }
+    }
+
+    val card = command("card") {
+        requires { source ->  Permissions.check(source, "rsn.command.card") }
+        runsAsync {
+            CardCommand().init(source)
+        }
+
+        literal("to") {
+            argument("targets", GameProfileArgumentType.gameProfile()) {
+                argument<Int>("count") {
+                    runsAsync {
+
+                    }
+                }
+            }
+        }
+
+        literal("check") {
+            requires { source ->  Permissions.check(source, "rsn.admin.command.card.check", 4) }
+            runsAsync {
+
+            }
+        }
+    }
+
+    val verify = command("verify") {
+        requires { source ->  Permissions.check(source, "rsn.command.verify") }
+        requires { source -> source.isExecutedByPlayer }
+        argument<Int>("code") { code ->
+            runsAsync {
+                VerifyCommand().verify(code(), source)
             }
         }
     }

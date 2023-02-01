@@ -7,6 +7,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.pio.rsn.model.Banned
+import org.pio.rsn.model.Integration
 import org.pio.rsn.model.Valid
 import org.pio.rsn.model.Whitelist
 
@@ -49,6 +50,19 @@ fun requestWhitelist(uuid: String): Whitelist? {
         return null
     }
 }
+
+fun requestCard(uuid: String): Integration? {
+    val request = Request.Builder()
+        .url("https://api.p-io.org/v1/players/${uuid}/integration")
+        .build()
+    client.newCall(request).execute().use { response ->
+        if (response.code == success) {
+            return gson.fromJson(response.body?.string() ?: String(), Integration::class.java)
+        }
+        return null
+    }
+}
+
 fun contrastBanned(uuid: String): Boolean? {
     val request = Request.Builder()
         .url("https://api.p-io.org/v1/players/${uuid}/banned")

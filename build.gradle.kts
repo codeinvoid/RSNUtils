@@ -7,6 +7,7 @@ version = project.extra["mod_version"] as String
 group = project.extra["maven_group"] as String
 repositories {
     mavenCentral()
+    mavenLocal()
     maven { url = uri("https://jitpack.io") }
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
 }

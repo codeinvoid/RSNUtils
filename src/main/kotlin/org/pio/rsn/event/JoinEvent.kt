@@ -13,48 +13,27 @@ import net.minecraft.util.Formatting
 import net.minecraft.world.GameMode
 import net.silkmc.silk.core.annotations.ExperimentalSilkApi
 import net.silkmc.silk.core.event.PlayerEvents
-import net.silkmc.silk.core.text.broadcastText
 import org.pio.rsn.model.Whitelist
-import org.pio.rsn.temp.bannedMessage
 import org.pio.rsn.temp.whitelistTitle
-import org.pio.rsn.utils.contrastBanned
-import org.pio.rsn.utils.requestBanned
 import org.pio.rsn.utils.requestWhitelist
 
 class JoinEvent {
     @OptIn(ExperimentalSilkApi::class)
     fun joinEvents() {
-        PlayerEvents.postLogin.listen { event ->
+        PlayerEvents.preLogin.listen { event ->  
             val player = event.player
-            val name = event.player.name
+            val name = event.player.name.copy()
             val uuid = event.player.uuidAsString.replace("-", "")
-            playerHandle(player, name, uuid)
+            playerTest(player, name, uuid)
         }
+
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun playerHandle(player: ServerPlayerEntity, name: Text, uuid: String) {
+    private fun playerTest(player: ServerPlayerEntity, name: Text, uuid: String) {
         GlobalScope.launch {
-            val banned = requestBanned(uuid)
             val whitelist = requestWhitelist(uuid)
-
-            when (contrastBanned(uuid)) {
-                null -> {
-                    player.networkHandler.disconnect(Text.literal("API连接失败 请重试"))
-                }
-
-                true -> {
-                    contrastWhitelist(whitelist, player)
-                }
-
-                false -> {
-                    player.networkHandler.disconnect(banned?.let { bannedMessage(it) })
-                    player.server.broadcastText(
-                        Text.literal("玩家 $name 试图进入服务器，但是他已被被封禁!")
-                            .setStyle(Style.EMPTY.withColor(Formatting.RED))
-                    )
-                }
-            }
+            contrastWhitelist(whitelist, player)
         }
     }
 
@@ -63,12 +42,16 @@ class JoinEvent {
 
         if (whitelist != null) {
             if(!whitelist.active){
-                channel.sendPacket(TitleFadeS2CPacket(300, 24000, 0))
+                player.sendMessage(Text.literal("✘ ").setStyle(Style.EMPTY.withColor(Formatting.RED))
+                    .append("白名单验证不通过"))
+                channel.sendPacket(TitleFadeS2CPacket(30, 24000, 30))
                 channel.sendPacket(TitleS2CPacket(whitelistTitle))
                 player.changeGameMode(GameMode.ADVENTURE)
                 channel.sendPacket(SubtitleS2CPacket(Text.of("以完成验证")))
+                return
             }
-            return
+            player.sendMessage(Text.literal("✔ ").setStyle(Style.EMPTY.withColor(Formatting.GREEN))
+                .append("白名单验证通过"))
         } else {
             channel.disconnect(Text.literal("请先在群内申请白名单后再进入"))
         }
