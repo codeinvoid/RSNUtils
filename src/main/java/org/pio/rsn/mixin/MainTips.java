@@ -13,10 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MainTips {
     @Shadow @Final private static Logger LOGGER;
 
-    @Shadow
-    public static void main(String[] args) {
-    }
-
     @Inject(method = "main", at = @At("HEAD"))
     private static void main(String[] args, CallbackInfo ci) {
         LOGGER.info("""

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import java.net.SocketAddress;
 
 @Mixin(net.minecraft.server.PlayerManager.class)
-public class PlayerManager {
+public abstract class PlayerManager {
     /**
      * @author HoiGe
      * @reason 修改返回

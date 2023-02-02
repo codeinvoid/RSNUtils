@@ -6,7 +6,6 @@ import net.minecraft.command.argument.MessageArgumentType
 import net.silkmc.silk.commands.command
 
 class Commands {
-
     val ban = command("ban") {
         requires { source ->  Permissions.check(source, "rsn.admin.command.ban", 4) }
         argument("targets", GameProfileArgumentType.gameProfile()) { player ->
