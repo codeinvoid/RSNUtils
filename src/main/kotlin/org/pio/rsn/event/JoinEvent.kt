@@ -22,15 +22,13 @@ class JoinEvent {
     fun joinEvents() {
         PlayerEvents.preLogin.listen { event ->  
             val player = event.player
-            val name = event.player.name.copy()
             val uuid = event.player.uuidAsString.replace("-", "")
-            playerTest(player, name, uuid)
+            playerTest(player, uuid)
         }
-
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun playerTest(player: ServerPlayerEntity, name: Text, uuid: String) {
+    private fun playerTest(player: ServerPlayerEntity, uuid: String) {
         GlobalScope.launch {
             val whitelist = requestWhitelist(uuid)
             contrastWhitelist(whitelist, player)
@@ -39,7 +37,6 @@ class JoinEvent {
 
     private fun contrastWhitelist(whitelist: Whitelist?, player: ServerPlayerEntity) {
         val channel = player.networkHandler
-
         if (whitelist != null) {
             if(!whitelist.active){
                 player.sendMessage(Text.literal("✘ ").setStyle(Style.EMPTY.withColor(Formatting.RED))

@@ -6,6 +6,7 @@
   "mixins": [
     "MainTips",
     "MinecraftServerMixin",
+    "PlayerManager",
     "ServerLoginNetworkHandleMixin",
     "ServerVersion",
     "block.MushroomDevourer",

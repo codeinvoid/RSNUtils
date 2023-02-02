@@ -1,6 +1,5 @@
 package org.pio.rsn.temp
 
-import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.text.MutableText
 import net.minecraft.text.Style
 import net.minecraft.text.Text
@@ -36,7 +35,7 @@ fun bannedMessage(banned: Banned) : MutableText {
         .append(
             Text.literal("申诉 ❯❯ ")
                 .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(false)))
-        .append(Text.literal("如有疑问发送邮件至 issue@p-io.org").setStyle(Style.EMPTY.withBold(false)))
+        .append(Text.literal("(邮箱) issue@p-io.org").setStyle(Style.EMPTY.withBold(false)))
 }
 
 val whitelistTitle : Text = Text.literal("输入 ").setStyle(Style.EMPTY.withColor(Formatting.GOLD))
