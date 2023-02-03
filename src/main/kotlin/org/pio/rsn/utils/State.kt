@@ -1,16 +1,13 @@
 package org.pio.rsn.utils
 
-import org.pio.rsn.api.State
 import com.google.gson.Gson
-import io.github.prismwork.prismconfig.api.PrismConfig
-import io.github.prismwork.prismconfig.api.config.DefaultSerializers
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.jetbrains.annotations.Nullable
-import org.pio.rsn.Server
+import org.pio.rsn.api.State
 import org.pio.rsn.config.Config
 
 class State : State {
@@ -20,11 +17,7 @@ class State : State {
        const val accept = 202
        val client = OkHttpClient()
        private val gson = Gson()
-       private val config: Config = PrismConfig.getInstance().serialize(
-           Config::class.java,
-           Server.configFile,
-           DefaultSerializers.getInstance().toml(Config::class.java)
-       )
+       private val config: Config = Types().readConfig()
     }
 
     @Nullable

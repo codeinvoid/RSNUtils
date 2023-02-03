@@ -33,10 +33,11 @@ class UnbanCommand {
             val uuid = item.id.toString()
             val oldBanned = Types().getBanned(uuid)
             if (oldBanned != null) {
-                if (Types().putBanned(
-                        Banned(false,0, "", source.name, ""),
-                        uuid
-                    ) && oldBanned.active) {
+                val putBanned = Types().putBanned(
+                    Banned(false,0, "", source.name, ""),
+                    uuid
+                )
+                if (putBanned && oldBanned.active) {
                     source.server.broadcastText(
                         Text.literal("玩家 ${item.name} 被 ${source.name} 赦免了!")
                             .setStyle(Style.EMPTY.withColor(Formatting.YELLOW))

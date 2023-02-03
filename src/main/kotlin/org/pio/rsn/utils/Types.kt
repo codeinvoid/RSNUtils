@@ -1,5 +1,8 @@
 package org.pio.rsn.utils
 
+import org.pio.rsn.Server
+import org.pio.rsn.config.Config
+import org.pio.rsn.config.ConfigOperator
 import org.pio.rsn.model.Banned
 import org.pio.rsn.model.Integration
 import org.pio.rsn.model.Valid
@@ -7,9 +10,15 @@ import org.pio.rsn.model.Whitelist
 
 class Types {
     /**
+     * Config
+     */
+    fun readConfig() = ConfigOperator(Server.configFile()).read(Config::class.java)
+    fun writeConfig(content: Config) = ConfigOperator(Server.configFile()).write(Config::class.java, content)
+
+    /**
      * API
      */
-    private val playerAPI = "https://api.p-io.org/v1/players"
+    private val playerAPI = readConfig().api["serverAPI"].toString()
 
     /**
      * GET

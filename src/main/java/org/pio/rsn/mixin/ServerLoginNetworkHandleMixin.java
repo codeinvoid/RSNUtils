@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -42,7 +43,7 @@ public abstract class ServerLoginNetworkHandleMixin {
     @Overwrite
     private void addToServer(ServerPlayerEntity player) {
         Thread thread = new Thread(() ->
-                requestBannedList(player), "Logging thread #"+ NEXT_LOGGING_THREAD_ID.incrementAndGet());
+                getConfig(player), "Logging thread #"+ NEXT_LOGGING_THREAD_ID.incrementAndGet());
         thread.setUncaughtExceptionHandler((threadx, throwable) ->
                 LOGGER.error("Uncaught exception in server thread", throwable));
         if (Runtime.getRuntime().availableProcessors() > 4) {
@@ -51,13 +52,24 @@ public abstract class ServerLoginNetworkHandleMixin {
         thread.start();
     }
 
+    private void getConfig(ServerPlayerEntity player) {
+        Text text = Text.literal("错误\n").append(Text.literal("API未配置 请向服主或管理员求助"));
+
+        Map<String, String> value = new Types().readConfig().getApi();
+        if (value.get("serverAPI") != null && !value.get("serverAPI").isEmpty()) {
+            requestBannedList(player);
+        } else {
+            doDisconnect(text);
+        }
+    }
+
     private void requestBannedList(ServerPlayerEntity player) {
+        Text text = Text.literal("错误 ").append(Text.literal("API请求失败!"));
+
         if (new Types().getBanned(player.getUuidAsString()) != null) {
             addPlayerConnect(player);
         } else {
-            Text text = Text.literal("错误 ").append(Text.literal("API请求失败!"));
-            this.connection.send(new DisconnectS2CPacket(text));
-            this.connection.disconnect(text);
+            doDisconnect(text);
         }
     }
 
@@ -67,8 +79,7 @@ public abstract class ServerLoginNetworkHandleMixin {
             this.server.getPlayerManager().onPlayerConnect(this.connection, player);
         } else {
             Text text = bannedMessage(banned);
-            this.connection.send(new DisconnectS2CPacket(text));
-            this.connection.disconnect(text);
+            doDisconnect(text);
         }
     }
 
@@ -98,8 +109,12 @@ public abstract class ServerLoginNetworkHandleMixin {
         } catch (Exception exception) {
             LOGGER.error("Couldn't get player data.");
             MutableText text2 = Text.translatable("multiplayer.disconnect.invalid_player_data");
-            this.connection.send(new DisconnectS2CPacket(text2));
-            this.connection.disconnect(text2);
+            doDisconnect(text2);
         }
+    }
+
+    private void doDisconnect(Text text) {
+        this.connection.send(new DisconnectS2CPacket(text));
+        this.connection.disconnect(text);
     }
 }

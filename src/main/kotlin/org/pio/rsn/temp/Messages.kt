@@ -18,10 +18,10 @@ fun bannedMessage(banned: Banned) : MutableText {
             Text.literal("原因 ❯❯ ")
                 .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(false)))
         .append(
-            Text.literal(banned.reason+"\n")
+            Text.literal(bannedReason(banned))
                 .setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(false)))
         .append(
-            Text.literal("封禁编号 ❯❯ ")
+            Text.literal("\n封禁编号 ❯❯ ")
                 .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(false)))
         .append(
             Text.literal(banned.nanoid+"\n")
@@ -49,4 +49,12 @@ fun cardFeedback(card: Integration): Text {
     .append(Text.literal("卡号 ➤ " + "${card.nanoid}\n"))
     .append(Text.literal("余额 ➤ ∅${countPoint.format(count)}\n"))
     .append(Text.literal("开通时间 ➤ " + SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(card.time)))
+}
+
+fun bannedReason(banned: Banned): String {
+    return if (banned.reason == "null" || banned.reason == "") {
+        "无"
+    } else {
+        banned.reason
+    }
 }

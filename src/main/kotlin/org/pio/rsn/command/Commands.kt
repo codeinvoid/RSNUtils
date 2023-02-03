@@ -7,12 +7,14 @@ import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.silkmc.silk.commands.command
+import org.pio.rsn.utils.Types
 
 class Commands {
     companion object {
         const val maxLevel = 4
-
+        var token: String = Types().readConfig().token
     }
+
     val ban = command("ban") {
         requires { source ->  Permissions.check(source, "rsn.admin.command.ban", maxLevel) }
         argument("targets", GameProfileArgumentType.gameProfile()) { player ->
@@ -79,7 +81,7 @@ class Commands {
         }
 
         literal("token") {
-            requires { source ->  Permissions.check(source, "rsn.admin.command.config.token") }
+            requires { source ->  Permissions.check(source, "rsn.admin.command.config.token", maxLevel) }
             argument<String>("token") { token ->
                 runsAsync {
                     MainCommand().settingToken(token(), source)
@@ -87,6 +89,23 @@ class Commands {
             }
             runsAsync {
                 MainCommand().lookupToken(source)
+            }
+        }
+
+        literal("api") {
+            requires { source ->  Permissions.check(source, "rsn.admin.command.config.api", maxLevel) }
+            argument<String>("key") { key ->
+                argument<String>("value") {value ->
+                    runsAsync {
+                        MainCommand().settingAPI(source, key(), value())
+                    }
+                }
+                runsAsync {
+                    MainCommand().checkAPI(source, key())
+                }
+            }
+            runsAsync {
+                MainCommand().lookupAPI(source)
             }
         }
     }
