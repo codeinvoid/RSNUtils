@@ -8,7 +8,7 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.pio.rsn.model.Whitelist;
-import org.pio.rsn.utils.StateKt;
+import org.pio.rsn.utils.Types;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,7 +45,7 @@ public abstract class WhitelistChecker {
     }
 
     public void checkWhitelistValue(ServerPlayerEntity serverPlayerEntity) {
-        Whitelist isWhitelistActive = StateKt.requestWhitelist(serverPlayerEntity.getUuidAsString());
+        Whitelist isWhitelistActive = new Types().getWhitelist(serverPlayerEntity.getUuidAsString());
         if (isWhitelistActive == null) {
             serverPlayerEntity.networkHandler.disconnect(Text.literal("multiplayer.disconnect.not_whitelisted"));
         } else {

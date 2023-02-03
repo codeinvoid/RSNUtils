@@ -10,16 +10,26 @@ repositories {
     mavenLocal()
     maven { url = uri("https://jitpack.io") }
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
+    maven {
+        name = "Nova Committee - Release"
+        url = uri("https://maven.nova-committee.cn/releases/")
+    }
+    maven {
+        name = "Nova Committee - Snapshot"
+        url = uri("https://maven.nova-committee.cn/snapshots/")
+    }
 }
 dependencies {
     minecraft("com.mojang", "minecraft", project.extra["minecraft_version"] as String)
     mappings("net.fabricmc", "yarn", project.extra["yarn_mappings"] as String, null, "v2")
     modImplementation("net.fabricmc", "fabric-loader", project.extra["loader_version"] as String)
     modImplementation("net.fabricmc.fabric-api", "fabric-api", project.extra["fabric_version"] as String)
-    modImplementation("net.fabricmc", "fabric-language-kotlin", project.extra["fabric_language_kotlin_version"] as String)
+    modImplementation("net.fabricmc", "fabric-language-kotlin",
+        project.extra["fabric_language_kotlin_version"] as String)
     modImplementation("net.silkmc:silk-commands:1.9.5")
     modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")
 
+    implementation("io.github.prismwork:prismconfig:0.2.0:all")
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
@@ -39,7 +49,15 @@ tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions { jvmTarget = javaVersion.toString() } }
     jar { from("LICENSE") { rename { "${it}_${base.archivesName.get()}" } } }
     processResources {
-        filesMatching("fabric.mod.json") { expand(mutableMapOf("version" to project.extra["mod_version"] as String, "fabricloader" to project.extra["loader_version"] as String, "fabric_api" to project.extra["fabric_version"] as String, "fabric_language_kotlin" to project.extra["fabric_language_kotlin_version"] as String, "minecraft" to project.extra["minecraft_version"] as String, "java" to project.extra["java_version"] as String)) }
+        filesMatching("fabric.mod.json") { expand(mutableMapOf(
+            "version" to project.extra["mod_version"] as String,
+            "fabricloader" to project.extra["loader_version"] as String,
+            "fabric_api" to project.extra["fabric_version"] as String,
+            "fabric_language_kotlin" to project.extra["fabric_language_kotlin_version"] as String,
+            "minecraft" to project.extra["minecraft_version"] as String,
+            "java" to project.extra["java_version"] as String)
+        )
+        }
         filesMatching("*.mixins.json") { expand(mutableMapOf("java" to project.extra["java_version"] as String)) }
     }
     java {

@@ -9,7 +9,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
-import org.pio.rsn.utils.StateKt;
+import org.pio.rsn.model.Banned;
+import org.pio.rsn.utils.Types;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +21,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.pio.rsn.temp.MessagesKt.bannedMessage;
-import static org.pio.rsn.utils.StateKt.requestBanned;
 
 @Mixin(ServerLoginNetworkHandler.class)
 public abstract class ServerLoginNetworkHandleMixin {
@@ -52,7 +52,7 @@ public abstract class ServerLoginNetworkHandleMixin {
     }
 
     private void requestBannedList(ServerPlayerEntity player) {
-        if (StateKt.contrastBanned(player.getUuidAsString()) != null) {
+        if (new Types().getBanned(player.getUuidAsString()) != null) {
             addPlayerConnect(player);
         } else {
             Text text = Text.literal("错误 ").append(Text.literal("API请求失败!"));
@@ -62,11 +62,11 @@ public abstract class ServerLoginNetworkHandleMixin {
     }
 
     private void addPlayerConnect(ServerPlayerEntity player) {
-        Boolean uUid = StateKt.contrastBanned(player.getUuidAsString());
-        if (Boolean.TRUE.equals(uUid)) {
+        Banned banned = Objects.requireNonNull(new Types().getBanned(player.getUuidAsString()));
+        if (!banned.getActive()) {
             this.server.getPlayerManager().onPlayerConnect(this.connection, player);
         } else {
-            Text text = bannedMessage(Objects.requireNonNull(requestBanned(player.getUuidAsString())));
+            Text text = bannedMessage(banned);
             this.connection.send(new DisconnectS2CPacket(text));
             this.connection.disconnect(text);
         }
@@ -91,7 +91,8 @@ public abstract class ServerLoginNetworkHandleMixin {
     private void sendDisconnectedMessages(Text reason) {
         try {
             assert this.profile != null;
-            if (Boolean.TRUE.equals(StateKt.contrastBanned(this.profile.getId().toString()))) {
+            Banned banned = Objects.requireNonNull(new Types().getBanned(this.profile.getId().toString()));
+            if (!banned.getActive()) {
                 LOGGER.info("{} lost connection: {}", this.getConnectionInfo(), reason.getString());
             }
         } catch (Exception exception) {

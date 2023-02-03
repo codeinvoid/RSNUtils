@@ -9,7 +9,8 @@ import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.silkmc.silk.core.text.broadcastText
-import org.pio.rsn.utils.putBanned
+import org.pio.rsn.model.Banned
+import org.pio.rsn.utils.Types
 
 class UnbanCommand {
     @OptIn(DelicateCoroutinesApi::class)
@@ -30,11 +31,19 @@ class UnbanCommand {
     private fun unbanExecute(player: Collection<GameProfile>, source: ServerCommandSource) {
         for (item in player) {
             val uuid = item.id.toString()
-            if (putBanned(uuid, "", source.name, false)) {
-                source.server.broadcastText(
-                    Text.literal("玩家 ${item.name} 被 ${source.name} 赦免了!")
-                        .setStyle(Style.EMPTY.withColor(Formatting.YELLOW))
-                )
+            val oldBanned = Types().getBanned(uuid)
+            if (oldBanned != null) {
+                if (Types().putBanned(
+                        Banned(false,0, "", source.name, ""),
+                        uuid
+                    ) && oldBanned.active) {
+                    source.server.broadcastText(
+                        Text.literal("玩家 ${item.name} 被 ${source.name} 赦免了!")
+                            .setStyle(Style.EMPTY.withColor(Formatting.YELLOW))
+                    )
+                } else {
+                    source.sendMessage(Text.literal("处理出错或该玩家未被封禁."))
+                }
             }
         }
     }
