@@ -9,7 +9,6 @@
     "PlayerManager",
     "ServerLoginNetworkHandleMixin",
     "ServerVersion",
-    "block.MushroomDevourer",
     "vanilla.BannedCommandMixin",
     "vanilla.WhitelistCommandMixin",
     "whitelist.WhitelistChecker"
