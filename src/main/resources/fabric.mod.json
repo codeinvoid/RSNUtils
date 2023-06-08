@@ -1,36 +1,38 @@
 {
-  "schemaVersion": 1,
-  "id": "rsn_server",
-  "version": "${version}",
-  "name": "RSN-Server",
-  "description": "A RSN Present Mod",
-  "authors": [
-    "HoiGe"
-  ],
-  "contact": {
-    "homepage": "https://p-io.org/"
-  },
-  "mixins": [
-    "rsn.mixins.json"
-  ],
-  "license": "Off Source",
-  "icon": "assets/rsn/icon.png",
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      {
-        "adapter": "kotlin",
-        "value": "org.pio.rsn.Server"
-      }
-    ]
-  },
-  "depends": {
-    "fabricloader": ">=${fabricloader}",
-    "fabric-api": ">=${fabric_api}",
-    "fabric-language-kotlin": ">=${fabric_language_kotlin}",
-    "minecraft": ">=${minecraft}",
-    "java": ">=${java}",
-    "luckperms": "5.4.58",
-    "fabric-permissions-api-v0": "*"
-  }
+	"schemaVersion": 1,
+	"id": "rsnutils-remake",
+	"version": "${version}",
+	"name": "RSNUtils-REMAKE",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/rsnutils-remake/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			{
+				"value": "org.pio.rsnutils.remake.ExampleMod",
+				"adapter": "kotlin"
+			}
+		]
+	},
+	"mixins": [
+		"rsnutils-remake.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.21",
+		"minecraft": "~1.20",
+		"java": ">=17",
+		"fabric-api": "*",
+		"fabric-language-kotlin": ">=1.8.21"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
 }
